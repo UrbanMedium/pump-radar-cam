@@ -1,11 +1,8 @@
-
 import Tesseract from 'tesseract.js'
 
 export async function ocrImage(image: HTMLImageElement | HTMLCanvasElement | Blob): Promise<string> {
-  const worker = await Tesseract.createWorker();
-  // english traineddata is bundled via CDN; worker downloads on first use
-  const { data: { text } } = await worker.recognize(image as any, 'eng', { logger: _m => {} });
-  await worker.terminate();
+  // Use top-level recognize with explicit language to satisfy v5 typings
+  const { data: { text } } = await Tesseract.recognize(image as any, 'eng', { logger: _m => {} });
   return text || '';
 }
 
